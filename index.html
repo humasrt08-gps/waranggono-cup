@@ -3,127 +3,1768 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101b2d">
-<title>Waranggono Trofeo 2026 — Jadwal & Klasemen</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="style.css">
+<title>Jadwal Waranggono Cup 2026</title>
+<style>
+  :root {
+    --bg-primary: #0a0f1d;
+    --bg-secondary: #111827;
+    --bg-card: #161f33;
+    --bg-card-hover: #1e2942;
+    --accent-gold: #f59e0b;
+    --accent-gold-light: #fcd34d;
+    --accent-emerald: #10b981;
+    --accent-blue: #3b82f6;
+    --accent-purple: #8b5cf6;
+    --accent-rose: #f43f5e;
+    --accent-wa: #25d366;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-primary);
+    background-image:
+      radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.12) 0%, transparent 45%),
+      radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.1) 0%, transparent 45%);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+    line-height: 1.5;
+  }
+
+  .container { max-width: 1080px; margin: 0 auto; }
+
+  .hero {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    background: linear-gradient(145deg, rgba(22, 31, 51, 0.9), rgba(15, 23, 42, 0.95));
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-gold), var(--accent-emerald));
+  }
+
+  .badge-year {
+    display: inline-block;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent-gold-light);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.85rem);
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: linear-gradient(to right, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .stat-box {
+    background: rgba(10, 15, 29, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.85rem;
+  }
+
+  .stat-value { font-size: 1.35rem; font-weight: 800; color: var(--accent-gold); }
+  .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    background: var(--bg-card);
+    padding: 1rem 1.25rem;
+    border-radius: 14px;
+    border: 1px solid var(--border-color);
+  }
+
+  .filter-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  .btn-filter {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-filter:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-main); }
+  .btn-filter.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35); }
+  .btn-filter[data-filter="A"].active { background: var(--accent-emerald); border-color: var(--accent-emerald); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35); }
+  .btn-filter[data-filter="B"].active { background: var(--accent-purple); border-color: var(--accent-purple); box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35); }
+  .btn-filter[data-filter="FINAL"].active { background: var(--accent-gold); color: #0f172a; border-color: var(--accent-gold); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35); }
+
+  .btn-edit-team {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent-gold-light);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-edit-team:hover { background: rgba(245, 158, 11, 0.25); }
+
+  .btn-wa {
+    background: rgba(37, 211, 102, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(37, 211, 102, 0.4);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .btn-wa:hover { background: rgba(37, 211, 102, 0.28); }
+  .btn-wa-sm {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    background: rgba(37, 211, 102, 0.12);
+    color: #4ade80;
+    border: 1px solid rgba(37, 211, 102, 0.3);
+    cursor: pointer;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .btn-wa-sm:hover { background: rgba(37, 211, 102, 0.28); }
+
+  .search-box { position: relative; min-width: 240px; flex: 1; max-width: 320px; }
+
+  .search-box input {
+    width: 100%;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.55rem 1rem 0.55rem 2.3rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-box input:focus { border-color: var(--accent-blue); }
+  .search-icon { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; pointer-events: none; }
+
+  .table-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  }
+
+  .table-responsive { width: 100%; overflow-x: auto; }
+
+  table { width: 100%; border-collapse: collapse; text-align: left; min-width: 820px; }
+
+  thead th {
+    background: rgba(10, 15, 29, 0.85);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 1.1rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  tbody tr { border-bottom: 1px solid var(--border-color); transition: background-color 0.2s ease; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover:not(.row-break) { background-color: var(--bg-card-hover); }
+
+  td { padding: 1rem; font-size: 0.93rem; vertical-align: middle; }
+
+  .time-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-weight: 600;
+    font-size: 0.88rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    color: #e2e8f0;
+    white-space: nowrap;
+  }
+
+  .badge-grup { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; height: 30px; padding: 0 0.6rem; border-radius: 8px; font-weight: 800; font-size: 0.82rem; letter-spacing: 0.5px; }
+  .grup-a { background: rgba(16, 185, 129, 0.16); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+  .grup-b { background: rgba(139, 92, 246, 0.16); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.35); }
+  .grup-final { background: rgba(245, 158, 11, 0.18); color: var(--accent-gold-light); border: 1px solid rgba(245, 158, 11, 0.4); }
+  .grup-empty { color: var(--text-muted); font-weight: 600; }
+
+  .matchup { display: flex; align-items: center; gap: 0.6rem; font-weight: 700; color: #ffffff; flex-wrap: wrap; }
+  .vs-tag { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.15rem 0.45rem; border-radius: 5px; letter-spacing: 0.5px; }
+
+  .screening-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: #cbd5e1;
+    font-size: 0.88rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+  }
+  .screening-dot { width: 7px; height: 7px; border-radius: 50%; background-color: var(--accent-gold); display: inline-block; }
+
+  .note-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
+  .note-juara3 { background: rgba(244, 63, 94, 0.16); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.35); }
+  .note-grandfinal { background: linear-gradient(135deg, rgba(245, 158, 11, 0.28), rgba(217, 119, 6, 0.28)); color: var(--accent-gold-light); border: 1px solid rgba(245, 158, 11, 0.5); box-shadow: 0 0 15px rgba(245, 158, 11, 0.15); }
+
+  .row-break { background: linear-gradient(90deg, rgba(245, 158, 11, 0.08), rgba(59, 130, 246, 0.08), rgba(245, 158, 11, 0.08)); }
+  .row-break td { text-align: center; font-weight: 800; letter-spacing: 2.5px; color: var(--accent-gold-light); font-size: 0.85rem; padding: 0.85rem; text-transform: uppercase; }
+  .row-final { background: rgba(245, 158, 11, 0.04); }
+
+  .footer { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.85rem; padding: 0 0.5rem; }
+
+  .btn-print { background: rgba(255, 255, 255, 0.07); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.55rem 1.1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-print:hover { background: rgba(255, 255, 255, 0.14); }
+
+  .empty-state { display: none; text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+
+  /* Score input */
+  .score-input {
+    width: 42px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--accent-gold-light);
+    padding: 0.3rem 0.2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .score-input:focus { border-color: var(--accent-gold); }
+  .score-input::-webkit-outer-spin-button,
+  .score-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  .score-sep { color: var(--text-muted); font-weight: 800; font-size: 0.9rem; }
+
+  /* Klasemen */
+  .standings-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    margin-top: 2rem;
+    overflow: hidden;
+  }
+  .standings-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.1rem 1.25rem;
+    background: rgba(10, 15, 29, 0.85);
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
+  }
+  .standings-header h2 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--accent-gold-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .standings-header .spacer { flex: 1; }
+  .btn-reset-scores {
+    background: rgba(244, 63, 94, 0.15);
+    color: #fb7185;
+    border: 1px solid rgba(244, 63, 94, 0.35);
+    padding: 0.45rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-reset-scores:hover { background: rgba(244, 63, 94, 0.3); }
+
+  .standings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .standings-table-wrap { overflow-x: auto; }
+  .standings-title {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .standings-title.grup-a { color: #34d399; }
+  .standings-title.grup-b { color: #a78bfa; }
+
+  table.standings {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 0;
+    font-size: 0.85rem;
+  }
+  table.standings th {
+    background: rgba(10, 15, 29, 0.6);
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.6rem 0.4rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+  }
+  table.standings th:first-child { text-align: left; padding-left: 0.7rem; }
+  table.standings td {
+    padding: 0.55rem 0.4rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.85rem;
+  }
+  table.standings td:first-child { text-align: left; padding-left: 0.7rem; font-weight: 700; }
+  table.standings tr:last-child td { border-bottom: none; }
+  table.standings tr.qualify { background: rgba(245, 158, 11, 0.06); }
+  table.standings tr.qualify td:first-child { color: var(--accent-gold-light); }
+  .pos-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    margin-right: 0.35rem;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-muted);
+  }
+  tr.qualify .pos-badge { background: var(--accent-gold); color: #0f172a; }
+  .pts-col { color: var(--accent-gold-light); font-weight: 800; }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    max-width: 560px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 1.5rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-card h2 { font-size: 1.25rem; margin-bottom: 0.35rem; }
+  .modal-card p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem; }
+
+  .editor-section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-gold);
+    margin: 1rem 0 0.5rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .editor-field { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
+  .editor-field label { min-width: 90px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+  .editor-field input {
+    flex: 1;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .editor-field input:focus { border-color: var(--accent-blue); }
+
+  .modal-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color); }
+  .modal-actions .btn-filter { flex: 1; min-width: 100px; }
+  .modal-actions .btn-save { background: var(--accent-emerald); color: #fff; border-color: var(--accent-emerald); }
+  .modal-actions .btn-save:hover { background: #059669; }
+  .modal-actions .btn-reset { background: rgba(244, 63, 94, 0.15); color: #fb7185; border-color: rgba(244, 63, 94, 0.35); }
+  .modal-actions .btn-reset:hover { background: rgba(244, 63, 94, 0.3); }
+
+  /* WA Modal */
+  .wa-team-picker {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .wa-team-btn {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 0.55rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .wa-team-btn:hover { background: rgba(37, 211, 102, 0.15); border-color: rgba(37, 211, 102, 0.4); }
+  .wa-team-btn.active { background: var(--accent-wa); color: #0a0f1d; border-color: var(--accent-wa); font-weight: 800; }
+
+  .wa-preview {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.9rem;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.78rem;
+    color: #e2e8f0;
+    white-space: pre-wrap;
+    max-height: 260px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    line-height: 1.55;
+  }
+
+  .wa-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .btn-wa-send {
+    flex: 1;
+    background: var(--accent-wa);
+    color: #0a0f1d;
+    border: none;
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-wa-send:hover { background: #1ebe5a; }
+  .btn-wa-copy {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-wa-copy:hover { background: rgba(255, 255, 255, 0.14); }
+
+  /* ==========================================================
+     ADDITIVE STYLES: STATISTIK TIM & WA KLASEMEN
+     ========================================================== */
+  .wc-team-stats-section {
+    padding: 0 1.25rem 1.35rem;
+    border-top: 1px solid var(--border-color);
+    background: rgba(10, 15, 29, 0.35);
+  }
+
+  .wc-team-stats-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 1.15rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .wc-team-stats-heading h3 {
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: 0.4px;
+  }
+
+  .wc-team-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .wc-group-stat-card {
+    background: rgba(17, 24, 39, 0.85);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+  }
+
+  .wc-group-stat-card.wc-group-a {
+    border-top: 3px solid var(--accent-emerald);
+  }
+
+  .wc-group-stat-card.wc-group-b {
+    border-top: 3px solid var(--accent-purple);
+  }
+
+  .wc-group-stat-title {
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .wc-group-a .wc-group-stat-title { color: #34d399; }
+  .wc-group-b .wc-group-stat-title { color: #a78bfa; }
+
+  .wc-empty-match-note {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .wc-team-stat-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 0.65rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .wc-mini-stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .wc-mini-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .wc-mini-team-name {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--accent-gold-light);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .wc-mini-pts-pill {
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 0.12rem 0.45rem;
+    border-radius: 999px;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent-gold-light);
+    white-space: nowrap;
+  }
+
+  .wc-mini-metrics {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.6rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .wc-mini-metrics span strong {
+    color: var(--text-main);
+  }
+
+  .wc-mini-extra {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.75rem;
+    color: #cbd5e1;
+  }
+
+  .wc-highlights-box {
+    background: rgba(10, 15, 29, 0.65);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 0.7rem 0.85rem;
+  }
+
+  .wc-highlights-title {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent-gold);
+    margin-bottom: 0.45rem;
+  }
+
+  .wc-highlight-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    padding: 0.22rem 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+  }
+
+  .wc-highlight-row:last-child {
+    border-bottom: none;
+  }
+
+  .wc-highlight-label {
+    color: var(--text-muted);
+  }
+
+  .wc-highlight-val {
+    color: var(--text-main);
+    font-weight: 700;
+    text-align: right;
+  }
+
+  .wc-wa-option-picker {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .standings-grid,
+    .wc-team-stats-grid {
+      grid-template-columns: 1fr;
+    }
+    .wc-team-stat-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media print {
+    body { background: #ffffff; color: #0f172a; padding: 0; }
+    .controls, .btn-print, .btn-edit-team, .btn-wa, .btn-wa-sm, .modal-overlay, .footer .btn-print,
+    .btn-reset-scores, .score-input, .wc-standings-wa-btn { display: none !important; }
+    .hero, .table-card, .standings-card, .wc-group-stat-card, .wc-mini-stat-card, .wc-highlights-box { background: #ffffff; border: 1px solid #cbd5e1; box-shadow: none; color: #0f172a; }
+    .hero h1 { -webkit-text-fill-color: #0f172a; }
+    thead th, table.standings th { background: #f1f5f9; color: #0f172a; }
+    td, .matchup, .time-pill, .screening-text, table.standings td, .wc-mini-team-name, .wc-highlight-val { color: #0f172a !important; background: transparent !important; }
+    .row-break td { background: #fef3c7 !important; color: #92400e !important; }
+    .score-sep { color: #0f172a; }
+  }
+</style>
 </head>
 <body>
-<div class="wrap">
 
-<!-- HEADER -->
-<header>
-  <div class="brand">
-    <button class="logo" id="logoBtn" title="Waranggono Trofeo">⚽</button>
-    <div>
-      <div class="eyebrow">Match Day • Mini Soccer</div>
-      <h1 id="tournamentName">Waranggono Trofeo 2026</h1>
+<div class="container">
+  <header class="hero">
+    <span class="badge-year">Official Match Schedule</span>
+    <h1>JADWAL WARANGGONO CUP 2026</h1>
+    <p>Jadwal lengkap fase penyisihan grup, jadwal screening pemain, hingga babak perebutan juara.</p>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-value">14</div><div class="stat-label">Total Pertandingan</div></div>
+      <div class="stat-box"><div class="stat-value">8 Tim</div><div class="stat-label">Grup A &amp; Grup B</div></div>
+      <div class="stat-box"><div class="stat-value">35 Menit</div><div class="stat-label">Durasi Per Slot</div></div>
+      <div class="stat-box"><div class="stat-value">06.45 - 15.55</div><div class="stat-label">Waktu Pelaksanaan</div></div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="filter-buttons">
+      <button class="btn-filter active" data-filter="ALL">Semua Jadwal</button>
+      <button class="btn-filter" data-filter="A">Grup A</button>
+      <button class="btn-filter" data-filter="B">Grup B</button>
+      <button class="btn-filter" data-filter="FINAL">Babak Final</button>
+    </div>
+    <div style="display:flex; gap:.5rem; flex-wrap:wrap; align-items:center;">
+      <button class="btn-edit-team" onclick="openEditor()">&#9998; Edit Nama Tim</button>
+      <button class="btn-wa" onclick="openWAModal()">&#128241; Kirim Jadwal via WA</button>
+      <div class="search-box">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" id="searchInput" placeholder="Cari tim...">
+      </div>
     </div>
   </div>
-<div class="header-right">
-  <div class="header-tag" id="headerTag">PENYISIHAN · ROUND ROBIN</div>
-  <button class="admin-btn" id="adminBtn" style="display:none">
-    <i class="fa-solid fa-gear"></i> Admin
-  </button>
-</div>
-</header>
 
-<!-- ERROR BANNER -->
-<div id="errorBanner" class="error-banner" style="display:none"></div>
+  <div class="table-card">
+    <div class="table-responsive">
+      <table id="scheduleTable">
+        <thead>
+          <tr>
+            <th>Jam</th>
+            <th>Grup</th>
+            <th>Pertandingan</th>
+            <th>Screening</th>
+            <th>Skor</th>
+            <th>Note</th>
+            <th>WA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-group="SCREENING">
+            <td><span class="time-pill">06.45 – 07.00</span></td>
+            <td><span class="grup-empty">-</span></td>
+            <td><span style="color: var(--text-muted); font-style: italic;">Persiapan &amp; Screening Awal</span></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="A1">Tim A1</span> vs <span data-team="A2">Tim A2</span></span></td>
+            <td>-</td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('A1')">WA A1</button></td>
+          </tr>
+          <tr data-group="A">
+            <td><span class="time-pill">07.00 – 07.35</span></td>
+            <td><span class="badge-grup grup-a">A</span></td>
+            <td><div class="matchup"><span data-team="A1">Tim A1</span> <span class="vs-tag">VS</span> <span data-team="A2">Tim A2</span></div></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="B1">Tim B1</span> vs <span data-team="B2">Tim B2</span></span></td>
+            <td><div class="matchup" data-match="A1vsA2"><input class="score-input" type="number" min="0" data-score="A1vsA2-A1" aria-label="Skor A1"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="A1vsA2-A2" aria-label="Skor A2"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('A1')">WA A1</button></td>
+          </tr>
+          <tr data-group="B">
+            <td><span class="time-pill">07.35 – 08.10</span></td>
+            <td><span class="badge-grup grup-b">B</span></td>
+            <td><div class="matchup"><span data-team="B1">Tim B1</span> <span class="vs-tag">VS</span> <span data-team="B2">Tim B2</span></div></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="A3">Tim A3</span> vs <span data-team="A4">Tim A4</span></span></td>
+            <td><div class="matchup" data-match="B1vsB2"><input class="score-input" type="number" min="0" data-score="B1vsB2-B1" aria-label="Skor B1"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="B1vsB2-B2" aria-label="Skor B2"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('B1')">WA B1</button></td>
+          </tr>
+          <tr data-group="A">
+            <td><span class="time-pill">08.10 – 08.45</span></td>
+            <td><span class="badge-grup grup-a">A</span></td>
+            <td><div class="matchup"><span data-team="A3">Tim A3</span> <span class="vs-tag">VS</span> <span data-team="A4">Tim A4</span></div></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="B3">Tim B3</span> vs <span data-team="B4">Tim B4</span></span></td>
+            <td><div class="matchup" data-match="A3vsA4"><input class="score-input" type="number" min="0" data-score="A3vsA4-A3" aria-label="Skor A3"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="A3vsA4-A4" aria-label="Skor A4"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('A3')">WA A3</button></td>
+          </tr>
+          <tr data-group="B">
+            <td><span class="time-pill">08.45 – 09.20</span></td>
+            <td><span class="badge-grup grup-b">B</span></td>
+            <td><div class="matchup"><span data-team="B3">Tim B3</span> <span class="vs-tag">VS</span> <span data-team="B4">Tim B4</span></div></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="A1">Tim A1</span> vs <span data-team="A3">Tim A3</span></span></td>
+            <td><div class="matchup" data-match="B3vsB4"><input class="score-input" type="number" min="0" data-score="B3vsB4-B3" aria-label="Skor B3"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="B3vsB4-B4" aria-label="Skor B4"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('B3')">WA B3</button></td>
+          </tr>
+          <tr data-group="A">
+            <td><span class="time-pill">09.20 – 09.55</span></td>
+            <td><span class="badge-grup grup-a">A</span></td>
+            <td><div class="matchup"><span data-team="A1">Tim A1</span> <span class="vs-tag">VS</span> <span data-team="A3">Tim A3</span></div></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="B1">Tim B1</span> vs <span data-team="B3">Tim B3</span></span></td>
+            <td><div class="matchup" data-match="A1vsA3"><input class="score-input" type="number" min="0" data-score="A1vsA3-A1" aria-label="Skor A1"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="A1vsA3-A3" aria-label="Skor A3"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('A1')">WA A1</button></td>
+          </tr>
+          <tr data-group="B">
+            <td><span class="time-pill">09.55 – 10.30</span></td>
+            <td><span class="badge-grup grup-b">B</span></td>
+            <td><div class="matchup"><span data-team="B1">Tim B1</span> <span class="vs-tag">VS</span> <span data-team="B3">Tim B3</span></div></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="A2">Tim A2</span> vs <span data-team="A4">Tim A4</span></span></td>
+            <td><div class="matchup" data-match="B1vsB3"><input class="score-input" type="number" min="0" data-score="B1vsB3-B1" aria-label="Skor B1"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="B1vsB3-B3" aria-label="Skor B3"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('B1')">WA B1</button></td>
+          </tr>
+          <tr data-group="A">
+            <td><span class="time-pill">10.30 – 11.05</span></td>
+            <td><span class="badge-grup grup-a">A</span></td>
+            <td><div class="matchup"><span data-team="A2">Tim A2</span> <span class="vs-tag">VS</span> <span data-team="A4">Tim A4</span></div></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="B2">Tim B2</span> vs <span data-team="B4">Tim B4</span></span></td>
+            <td><div class="matchup" data-match="A2vsA4"><input class="score-input" type="number" min="0" data-score="A2vsA4-A2" aria-label="Skor A2"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="A2vsA4-A4" aria-label="Skor A4"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('A2')">WA A2</button></td>
+          </tr>
+          <tr data-group="B">
+            <td><span class="time-pill">11.05 – 11.40</span></td>
+            <td><span class="badge-grup grup-b">B</span></td>
+            <td><div class="matchup"><span data-team="B2">Tim B2</span> <span class="vs-tag">VS</span> <span data-team="B4">Tim B4</span></div></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="A1">Tim A1</span> vs <span data-team="A4">Tim A4</span></span></td>
+            <td><div class="matchup" data-match="B2vsB4"><input class="score-input" type="number" min="0" data-score="B2vsB4-B2" aria-label="Skor B2"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="B2vsB4-B4" aria-label="Skor B4"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('B2')">WA B2</button></td>
+          </tr>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-top">
-    <div>
-      <div class="eyebrow">Competition schedule</div>
-      <h2 id="heroTitle">Fase Penyisihan Grup</h2>
-      <p id="heroSub">4 grup · 12 tim · 1 lapangan · Juara grup lolos ke semifinal</p>
+          <tr class="row-break" data-group="BREAK">
+            <td colspan="7">&#9208; BREAK / ISHOMA (11.40 – 12.10)</td>
+          </tr>
+
+          <tr data-group="A">
+            <td><span class="time-pill">12.10 – 12.45</span></td>
+            <td><span class="badge-grup grup-a">A</span></td>
+            <td><div class="matchup"><span data-team="A1">Tim A1</span> <span class="vs-tag">VS</span> <span data-team="A4">Tim A4</span></div></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="B1">Tim B1</span> vs <span data-team="B4">Tim B4</span></span></td>
+            <td><div class="matchup" data-match="A1vsA4"><input class="score-input" type="number" min="0" data-score="A1vsA4-A1" aria-label="Skor A1"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="A1vsA4-A4" aria-label="Skor A4"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('A1')">WA A1</button></td>
+          </tr>
+          <tr data-group="B">
+            <td><span class="time-pill">12.45 – 13.20</span></td>
+            <td><span class="badge-grup grup-b">B</span></td>
+            <td><div class="matchup"><span data-team="B1">Tim B1</span> <span class="vs-tag">VS</span> <span data-team="B4">Tim B4</span></div></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="A2">Tim A2</span> vs <span data-team="A3">Tim A3</span></span></td>
+            <td><div class="matchup" data-match="B1vsB4"><input class="score-input" type="number" min="0" data-score="B1vsB4-B1" aria-label="Skor B1"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="B1vsB4-B4" aria-label="Skor B4"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('B1')">WA B1</button></td>
+          </tr>
+          <tr data-group="A">
+            <td><span class="time-pill">13.20 – 13.55</span></td>
+            <td><span class="badge-grup grup-a">A</span></td>
+            <td><div class="matchup"><span data-team="A2">Tim A2</span> <span class="vs-tag">VS</span> <span data-team="A3">Tim A3</span></div></td>
+            <td><span class="screening-text"><span class="screening-dot"></span><span data-team="B2">Tim B2</span> vs <span data-team="B3">Tim B3</span></span></td>
+            <td><div class="matchup" data-match="A2vsA3"><input class="score-input" type="number" min="0" data-score="A2vsA3-A2" aria-label="Skor A2"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="A2vsA3-A3" aria-label="Skor A3"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('A2')">WA A2</button></td>
+          </tr>
+          <tr data-group="B">
+            <td><span class="time-pill">13.55 – 14.30</span></td>
+            <td><span class="badge-grup grup-b">B</span></td>
+            <td><div class="matchup"><span data-team="B2">Tim B2</span> <span class="vs-tag">VS</span> <span data-team="B3">Tim B3</span></div></td>
+            <td><span style="color: var(--text-muted);">-</span></td>
+            <td><div class="matchup" data-match="B2vsB3"><input class="score-input" type="number" min="0" data-score="B2vsB3-B2" aria-label="Skor B2"><span class="score-sep">-</span><input class="score-input" type="number" min="0" data-score="B2vsB3-B3" aria-label="Skor B3"></div></td>
+            <td>-</td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('B2')">WA B2</button></td>
+          </tr>
+
+          <tr class="row-break" data-group="BREAK">
+            <td colspan="7">&#9208; BREAK / ISHOMA (14.30 – 14.45)</td>
+          </tr>
+
+          <tr class="row-final" data-group="FINAL">
+            <td><span class="time-pill">14.45 – 15.20</span></td>
+            <td><span class="badge-grup grup-final">1</span></td>
+            <td><div class="matchup"><span data-team="RUNNER_A">Runner A</span> <span class="vs-tag">VS</span> <span data-team="RUNNER_B">Runner B</span></div></td>
+            <td><span style="color: var(--text-muted);">-</span></td>
+            <td>-</td>
+            <td><span class="note-badge note-juara3">&#129353; Juara 3</span></td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('RUNNER_A')">WA</button></td>
+          </tr>
+          <tr class="row-final" data-group="FINAL">
+            <td><span class="time-pill">15.20 – 15.55</span></td>
+            <td><span class="badge-grup grup-final">2</span></td>
+            <td><div class="matchup"><span data-team="JUARA_A">Juara A</span> <span class="vs-tag">VS</span> <span data-team="JUARA_B">Juara B</span></div></td>
+            <td><span style="color: var(--text-muted);">-</span></td>
+            <td>-</td>
+            <td><span class="note-badge note-grandfinal">&#127942; Juara 1 &amp; 2</span></td>
+            <td><button class="btn-wa-sm" onclick="shareTeam('JUARA_A')">WA</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="emptyState" class="empty-state">
+        Tidak ada jadwal pertandingan yang cocok dengan pencarian Anda.
+      </div>
     </div>
-    <div class="start-time">
-      <strong id="startTime">08:00</strong>
-      <span>Kick-off pertama</span>
+  </div>
+
+  <!-- ============ KLASEMEN ============ -->
+  <div class="standings-card">
+    <div class="standings-header">
+      <h2>&#127942; Klasemen Grup</h2>
+      <span class="spacer"></span>
+      <button class="btn-wa wc-standings-wa-btn" onclick="wcOpenStandingsWAModal()">&#128241; Bagikan Klasemen via WA</button>
+      <button class="btn-reset-scores" onclick="resetScores()">&#8635; Reset Semua Skor</button>
+    </div>
+    <div class="standings-grid" id="standingsGrid">
+      <!-- Diisi oleh JavaScript -->
+    </div>
+
+    <!-- ============ STATISTIK TIM (ADDITIVE) ============ -->
+    <div class="wc-team-stats-section" id="wcTeamStatsSection">
+      <div class="wc-team-stats-heading">
+        <h3>&#128202; Statistik Tim</h3>
+      </div>
+      <div class="wc-team-stats-grid" id="wcTeamStatsGrid">
+        <!-- Diisi oleh JavaScript -->
+      </div>
     </div>
   </div>
-  <div class="stats">
-    <div class="stat"><b id="statTotal">12</b><small>Total pertandingan</small></div>
-    <div class="stat"><b id="statGroups">4</b><small>Grup peserta</small></div>
-    <div class="stat"><b id="statDuration">35'</b><small>Durasi per laga</small></div>
-    <div class="stat"><b id="statEnd">15:55</b><small>Target selesai</small></div>
-  </div>
-</section>
 
-<!-- ADMIN PANEL -->
-<section class="admin-panel" id="adminPanel" style="display:none">
-  <div class="admin-head">
-    <div>
-      <b><i class="fa-solid fa-wrench"></i> Panel Panitia</b>
-      <div class="admin-hint">Perubahan langsung tersimpan ke Google Sheets.</div>
+  <footer class="footer">
+    <div>* Harap setiap tim sudah siap di area <strong>Screening</strong> sesuai jadwal sebelum pertandingan dimulai.</div>
+    <button class="btn-print" onclick="window.print()">&#128424; Cetak / Simpan PDF</button>
+  </footer>
+</div>
+
+<!-- Modal Editor Nama Tim -->
+<div id="editorModal" class="modal-overlay">
+  <div class="modal-card">
+    <h2>&#9998; Edit Nama Tim</h2>
+    <p>Ubah nama tim. Perubahan otomatis diterapkan ke kolom Pertandingan &amp; Screening, dan tersimpan di browser.</p>
+    <div class="editor-section-title">Grup A</div>
+    <div class="editor-field"><label>A1</label><input type="text" data-key="A1"></div>
+    <div class="editor-field"><label>A2</label><input type="text" data-key="A2"></div>
+    <div class="editor-field"><label>A3</label><input type="text" data-key="A3"></div>
+    <div class="editor-field"><label>A4</label><input type="text" data-key="A4"></div>
+    <div class="editor-section-title">Grup B</div>
+    <div class="editor-field"><label>B1</label><input type="text" data-key="B1"></div>
+    <div class="editor-field"><label>B2</label><input type="text" data-key="B2"></div>
+    <div class="editor-field"><label>B3</label><input type="text" data-key="B3"></div>
+    <div class="editor-field"><label>B4</label><input type="text" data-key="B4"></div>
+    <div class="editor-section-title">Babak Final</div>
+    <div class="editor-field"><label>Runner A</label><input type="text" data-key="RUNNER_A"></div>
+    <div class="editor-field"><label>Runner B</label><input type="text" data-key="RUNNER_B"></div>
+    <div class="editor-field"><label>Juara A</label><input type="text" data-key="JUARA_A"></div>
+    <div class="editor-field"><label>Juara B</label><input type="text" data-key="JUARA_B"></div>
+    <div class="modal-actions">
+      <button class="btn-filter btn-save" onclick="saveTeams()">&#10003; Simpan</button>
+      <button class="btn-filter btn-reset" onclick="resetTeams()">&#8635; Reset</button>
+      <button class="btn-filter" onclick="closeEditor()">Batal</button>
     </div>
   </div>
-  <nav class="admin-tabs" id="adminTabs">
-    <button class="admin-tab active" data-tab="teams"><i class="fa-solid fa-users"></i> Tim</button>
-    <button class="admin-tab" data-tab="schedule"><i class="fa-regular fa-calendar"></i> Jadwal</button>
-    <button class="admin-tab" data-tab="scores"><i class="fa-solid fa-futbol"></i> Skor</button>
-    <button class="admin-tab" data-tab="knockout"><i class="fa-solid fa-trophy"></i> Knockout</button>
-  </nav>
-  <div class="admin-content" id="adminContent"></div>
-</section>
-
-<!-- PUBLIC NOTICE -->
-<div class="public-notice" id="publicNotice">
-  <i class="fa-solid fa-circle-info"></i>
-  Data diperbarui otomatis tiap 60 detik.
-  <span class="notice-admin">Panitia? Klik <b>⚙ Panitia</b> di kanan atas.</span>
 </div>
 
-<!-- JADWAL -->
-<div class="section-head">
-  <div>
-    <h3>Jadwal pertandingan</h3>
-    <p>Waktu termasuk jeda turun minum 5 menit dan jeda antarpertandingan 5 menit.</p>
-  </div>
-  <div class="actions">
-    <button class="btn primary" onclick="window.print()"><i class="fa-solid fa-download"></i> Cetak / PDF</button>
+<!-- Modal WA -->
+<div id="waModal" class="modal-overlay">
+  <div class="modal-card">
+    <h2>&#128241; Kirim Jadwal via WhatsApp</h2>
+    <p>Pilih tim untuk melihat jadwal pertandingan + screening mereka, lalu kirim ke WA.</p>
+
+    <div class="editor-section-title">Pilih Tim</div>
+    <div class="wa-team-picker" id="waTeamPicker"></div>
+
+    <div class="editor-section-title">Preview Pesan</div>
+    <div class="wa-preview" id="waPreview">Pilih tim di atas untuk melihat preview...</div>
+
+    <div class="wa-actions">
+      <button class="btn-wa-send" onclick="sendWA()">&#128241; Kirim ke WhatsApp</button>
+      <button class="btn-wa-copy" onclick="copyWA()">&#128203; Copy Teks</button>
+      <button class="btn-filter" onclick="closeWAModal()">Batal</button>
+    </div>
   </div>
 </div>
 
-<nav class="filters" id="filters" aria-label="Filter grup">
-  <button class="filter active" data-filter="all">Semua pertandingan</button>
-</nav>
+<!-- Modal WA Klasemen (ADDITIVE) -->
+<div id="wcWaStandingsModal" class="modal-overlay">
+  <div class="modal-card">
+    <h2>&#128241; Bagikan Klasemen via WA</h2>
+    <p>Pilih cakupan klasemen untuk melihat preview pesan WhatsApp berdasarkan data klasemen aktual.</p>
 
-<main class="schedule" id="schedule"></main>
+    <div class="editor-section-title">Pilih Cakupan Klasemen</div>
+    <div class="wc-wa-option-picker" id="wcWaStandingsPicker">
+      <button type="button" class="wa-team-btn" data-wc-scope="A" onclick="wcSelectStandingsScope('A')">Klasemen Grup A</button>
+      <button type="button" class="wa-team-btn" data-wc-scope="B" onclick="wcSelectStandingsScope('B')">Klasemen Grup B</button>
+      <button type="button" class="wa-team-btn active" data-wc-scope="ALL" onclick="wcSelectStandingsScope('ALL')">Seluruh Klasemen</button>
+    </div>
 
-<!-- KLASEMEN -->
-<div class="section-head">
-  <div>
-    <h3><i class="fa-solid fa-ranking-star"></i> Klasemen grup</h3>
-    <p>Poin: menang 3, seri 1, kalah 0. Tie-breaker: GD → GF → head-to-head.</p>
+    <div class="editor-section-title">Preview Pesan</div>
+    <div class="wa-preview" id="wcWaStandingsPreview">Memuat klasemen...</div>
+
+    <div class="wa-actions">
+      <button type="button" class="btn-wa-send" onclick="wcSendStandingsWA()">&#128241; Kirim ke WhatsApp</button>
+      <button type="button" class="btn-wa-copy" onclick="wcCopyStandingsWA()">&#128203; Copy Teks</button>
+      <button type="button" class="btn-filter" onclick="wcCloseStandingsWAModal()">Tutup</button>
+    </div>
   </div>
 </div>
-<section class="standings" id="standings"></section>
 
-<!-- BRACKET -->
-<div class="section-head">
-  <div>
-    <h3><i class="fa-solid fa-trophy"></i> Bracket semifinal & final</h3>
-    <p>Juara grup A &amp; B melaju ke semifinal (A1 vs B2, B1 vs A2).</p>
-  </div>
-</div>
-<section class="bracket" id="bracket"></section>
-<div id="champion"></div>
+<script>
+  /* ==========================================================
+     NAMA TIM + LOCALSTORAGE
+     ========================================================== */
+  const DEFAULT_NAMES = {
+    A1: "Tim A1", A2: "Tim A2", A3: "Tim A3", A4: "Tim A4",
+    B1: "Tim B1", B2: "Tim B2", B3: "Tim B3", B4: "Tim B4",
+    RUNNER_A: "Runner A", RUNNER_B: "Runner B",
+    JUARA_A: "Juara A", JUARA_B: "Juara B"
+  };
+  const STORAGE_KEY = "waranggonoCup2026_teamNames";
+  const SCORE_STORAGE_KEY = "waranggonoCup2026_scores";
+  let teamNames = { ...DEFAULT_NAMES };
 
-<div class="note">
-  <b>Catatan panitia:</b> Setiap pertandingan berlangsung 35 menit (15' + istirahat 5' + 15'). Jeda 5 menit berikutnya untuk pergantian tim dan persiapan. Setelah penyisihan selesai pukul 15.55, siapkan waktu 15–30 menit untuk rekap klasemen sebelum semifinal.
-</div>
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) teamNames = { ...DEFAULT_NAMES, ...JSON.parse(saved) };
+  } catch (e) { console.warn(e); }
 
-<footer>
-  <div>WARANGGONO TROFEO 2026 · MINI SOCCER · RW 10 GRAND PERMATA SEPATAN</div>
-  <button class="logout-btn" id="logoutBtn" style="display:none">
-    <i class="fa-solid fa-right-from-bracket"></i> Keluar Mode Admin
-  </button>
-</footer>
-</div>
+  function renderTeams() {
+    document.querySelectorAll('[data-team]').forEach(el => {
+      const key = el.dataset.team;
+      if (teamNames[key] !== undefined) el.textContent = teamNames[key];
+    });
+    if (typeof filterSchedule === 'function') filterSchedule();
+  }
 
-<script src="app.js"></script>
+  /* ==========================================================
+     MODAL EDITOR
+     ========================================================== */
+  const modal = document.getElementById('editorModal');
+
+  function openEditor() {
+    modal.querySelectorAll('input[data-key]').forEach(inp => {
+      const key = inp.dataset.key;
+      inp.value = teamNames[key] !== undefined ? teamNames[key] : DEFAULT_NAMES[key];
+    });
+    modal.classList.add('open');
+    const first = modal.querySelector('input[data-key]');
+    if (first) setTimeout(() => first.focus(), 50);
+  }
+  function closeEditor() { modal.classList.remove('open'); }
+
+  function saveTeams() {
+    modal.querySelectorAll('input[data-key]').forEach(inp => {
+      const key = inp.dataset.key;
+      const val = inp.value.trim();
+      teamNames[key] = val !== '' ? val : DEFAULT_NAMES[key];
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(teamNames)); } catch (e) {}
+    renderTeams();
+    renderStandings();
+    closeEditor();
+  }
+
+  function resetTeams() {
+    if (!confirm("Kembalikan semua nama tim ke default?")) return;
+    teamNames = { ...DEFAULT_NAMES };
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    renderTeams();
+    renderStandings();
+    closeEditor();
+  }
+
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeEditor(); });
+
+  /* ==========================================================
+     WA SHARE — BUILD JADWAL PER TIM
+     ========================================================== */
+  function buildTeamSchedule(teamKey) {
+    const allRows = Array.from(document.querySelectorAll('#scheduleTable tbody tr'));
+    const matchRows = [];
+    const screeningRows = [];
+
+    allRows.forEach((row, idx) => {
+      if (row.classList.contains('row-break')) return;
+      const cells = row.querySelectorAll('td');
+      if (cells.length < 4) return;
+      const jam = cells[0].textContent.trim();
+
+      const matchupEl = row.querySelector('.matchup');
+      let playing = false;
+      if (matchupEl) {
+        matchupEl.querySelectorAll('[data-team]').forEach(el => {
+          if (el.dataset.team === teamKey) playing = true;
+        });
+      }
+      if (playing) matchRows.push({ idx, jam });
+
+      const screeningEl = row.querySelector('.screening-text');
+      let screening = false;
+      if (screeningEl) {
+        screeningEl.querySelectorAll('[data-team]').forEach(el => {
+          if (el.dataset.team === teamKey) screening = true;
+        });
+      }
+      if (screening) screeningRows.push({ idx, jam });
+    });
+
+    const result = matchRows.map(m => {
+      let screeningJam = '-';
+      const candidates = screeningRows.filter(s => s.idx < m.idx);
+      if (candidates.length > 0) {
+        screeningJam = candidates[candidates.length - 1].jam;
+      } else {
+        const after = screeningRows.filter(s => s.idx > m.idx);
+        if (after.length > 0) screeningJam = after[0].jam;
+      }
+      return { jamMatch: m.jam, jamScreening: screeningJam };
+    });
+
+    return result;
+  }
+
+  function buildWAText(teamKey) {
+    const teamName = teamNames[teamKey] || teamKey;
+    const schedule = buildTeamSchedule(teamKey);
+
+    let text = `*JADWAL PERTANDINGAN & SCREENING*\n`;
+    text += `*${teamName}*\n\n`;
+    text += `No. Match | Screening\n`;
+
+    if (schedule.length === 0) {
+      text += `(Tidak ada jadwal)`;
+    } else {
+      schedule.forEach((s, i) => {
+        text += `${i + 1}. ${s.jamMatch} | ${s.jamScreening}\n`;
+      });
+    }
+
+    text += `\n_Pesan otomatis dari Jadwal Waranggono Cup 2026_`;
+    return text;
+  }
+
+  function shareTeam(teamKey) {
+    const text = buildWAText(teamKey);
+    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  }
+
+  /* ==========================================================
+     WA MODAL
+     ========================================================== */
+  const waModal = document.getElementById('waModal');
+  let selectedTeam = null;
+
+  function openWAModal() {
+    const picker = document.getElementById('waTeamPicker');
+    picker.innerHTML = '';
+    const keys = ['A1','A2','A3','A4','B1','B2','B3','B4','RUNNER_A','RUNNER_B','JUARA_A','JUARA_B'];
+    keys.forEach(key => {
+      const btn = document.createElement('button');
+      btn.className = 'wa-team-btn';
+      btn.textContent = teamNames[key] || key;
+      btn.onclick = () => {
+        picker.querySelectorAll('.wa-team-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedTeam = key;
+        document.getElementById('waPreview').textContent = buildWAText(key);
+      };
+      picker.appendChild(btn);
+    });
+
+    selectedTeam = null;
+    document.getElementById('waPreview').textContent = 'Pilih tim di atas untuk melihat preview...';
+    waModal.classList.add('open');
+  }
+
+  function closeWAModal() { waModal.classList.remove('open'); }
+
+  function sendWA() {
+    if (!selectedTeam) { alert('Pilih tim dulu!'); return; }
+    shareTeam(selectedTeam);
+  }
+
+  function copyWA() {
+    if (!selectedTeam) { alert('Pilih tim dulu!'); return; }
+    const text = buildWAText(selectedTeam);
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Teks jadwal berhasil di-copy!');
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      alert('Teks jadwal berhasil di-copy!');
+    });
+  }
+
+  waModal.addEventListener('click', (e) => { if (e.target === waModal) closeWAModal(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (modal.classList.contains('open')) closeEditor();
+      if (waModal.classList.contains('open')) closeWAModal();
+      if (typeof wcCloseStandingsWAModal === 'function' && document.getElementById('wcWaStandingsModal').classList.contains('open')) {
+        wcCloseStandingsWAModal();
+      }
+    }
+  });
+
+  /* ==========================================================
+     FILTER & PENCARIAN
+     ========================================================== */
+  const filterButtons = document.querySelectorAll('.btn-filter[data-filter]');
+  const searchInput = document.getElementById('searchInput');
+  const rows = document.querySelectorAll('#scheduleTable tbody tr');
+  const emptyState = document.getElementById('emptyState');
+  let currentFilter = 'ALL';
+
+  function filterSchedule() {
+    const query = searchInput.value.toLowerCase().trim();
+    let visibleCount = 0;
+    rows.forEach(row => {
+      const group = row.getAttribute('data-group');
+      const text = row.textContent.toLowerCase();
+      const matchesGroup =
+        currentFilter === 'ALL' ||
+        group === currentFilter ||
+        (currentFilter === 'ALL' && (group === 'BREAK' || group === 'SCREENING'));
+      const matchesSearch = query === '' || text.includes(query);
+      if (matchesGroup && matchesSearch) {
+        row.style.display = '';
+        if (group !== 'BREAK') visibleCount++;
+      } else {
+        row.style.display = 'none';
+      }
+    });
+    emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+  }
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.getAttribute('data-filter');
+      filterSchedule();
+    });
+  });
+
+  searchInput.addEventListener('input', filterSchedule);
+
+  /* ==========================================================
+     INPUT SKOR & KLASEMEN
+     ========================================================== */
+  let matchScores = {};
+
+  // Definisikan pertandingan per grup
+  const GROUP_MATCHES = {
+    A: [
+      { id: 'A1vsA2', home: 'A1', away: 'A2' },
+      { id: 'A3vsA4', home: 'A3', away: 'A4' },
+      { id: 'A1vsA3', home: 'A1', away: 'A3' },
+      { id: 'A2vsA4', home: 'A2', away: 'A4' },
+      { id: 'A1vsA4', home: 'A1', away: 'A4' },
+      { id: 'A2vsA3', home: 'A2', away: 'A3' }
+    ],
+    B: [
+      { id: 'B1vsB2', home: 'B1', away: 'B2' },
+      { id: 'B3vsB4', home: 'B3', away: 'B4' },
+      { id: 'B1vsB3', home: 'B1', away: 'B3' },
+      { id: 'B2vsB4', home: 'B2', away: 'B4' },
+      { id: 'B1vsB4', home: 'B1', away: 'B4' },
+      { id: 'B2vsB3', home: 'B2', away: 'B3' }
+    ]
+  };
+
+  // Muat skor dari localStorage
+  try {
+    const savedScores = localStorage.getItem(SCORE_STORAGE_KEY);
+    if (savedScores) matchScores = JSON.parse(savedScores);
+  } catch (e) { console.warn(e); }
+
+  // Set nilai input skor dari data tersimpan
+  function syncScoreInputs() {
+    document.querySelectorAll('.score-input').forEach(inp => {
+      const key = inp.dataset.score;
+      if (!key) return;
+      const parts = key.split('-'); // format: matchId-teamKey
+      const matchId = parts[0];
+      const teamKey = parts.slice(1).join('-');
+      // Cari skor tersimpan
+      if (matchScores[matchId] && matchScores[matchId][teamKey] !== undefined) {
+        inp.value = matchScores[matchId][teamKey];
+      } else {
+        inp.value = '';
+      }
+    });
+  }
+
+  // Simpan skor setiap kali input berubah
+  function initScoreListeners() {
+    document.querySelectorAll('.score-input').forEach(inp => {
+      inp.addEventListener('input', (e) => {
+        const key = inp.dataset.score;
+        if (!key) return;
+        const parts = key.split('-');
+        const matchId = parts[0];
+        const teamKey = parts.slice(1).join('-');
+        const val = e.target.value.trim();
+        if (!matchScores[matchId]) matchScores[matchId] = {};
+        if (val === '' || isNaN(parseInt(val, 10)) || parseInt(val, 10) < 0) {
+          delete matchScores[matchId][teamKey];
+          e.target.value = '';
+        } else {
+          matchScores[matchId][teamKey] = parseInt(val, 10);
+        }
+        // Hapus entri kosong
+        if (Object.keys(matchScores[matchId]).length === 0) delete matchScores[matchId];
+        try { localStorage.setItem(SCORE_STORAGE_KEY, JSON.stringify(matchScores)); } catch (err) {}
+        renderStandings();
+        autoFillFinalTeams();
+      });
+    });
+  }
+
+  // Hitung klasemen untuk grup tertentu
+  function computeStandings(group) {
+    const matches = GROUP_MATCHES[group];
+    const teams = group === 'A' ? ['A1','A2','A3','A4'] : ['B1','B2','B3','B4'];
+    const stats = {};
+    teams.forEach(t => {
+      stats[t] = { team: t, mp: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0 };
+    });
+
+    matches.forEach(m => {
+      const score = matchScores[m.id];
+      if (!score) return;
+      const hg = score[m.home];
+      const ag = score[m.away];
+      if (hg === undefined || ag === undefined) return;
+
+      stats[m.home].mp++;
+      stats[m.away].mp++;
+      stats[m.home].gf += hg;
+      stats[m.home].ga += ag;
+      stats[m.away].gf += ag;
+      stats[m.away].ga += hg;
+
+      if (hg > ag) {
+        stats[m.home].w++;
+        stats[m.home].pts += 3;
+        stats[m.away].l++;
+      } else if (hg < ag) {
+        stats[m.away].w++;
+        stats[m.away].pts += 3;
+        stats[m.home].l++;
+      } else {
+        stats[m.home].d++;
+        stats[m.away].d++;
+        stats[m.home].pts += 1;
+        stats[m.away].pts += 1;
+      }
+    });
+
+    // Hitung GD
+    Object.values(stats).forEach(s => { s.gd = s.gf - s.ga; });
+
+    // Urutkan: pts > gd > gf > head-to-head (sederhana: nama)
+    const sorted = Object.values(stats).sort((a, b) => {
+      if (b.pts !== a.pts) return b.pts - a.pts;
+      if (b.gd !== a.gd) return b.gd - a.gd;
+      if (b.gf !== a.gf) return b.gf - a.gf;
+      return a.team.localeCompare(b.team);
+    });
+
+    return sorted;
+  }
+
+  // Render klasemen
+  function renderStandings() {
+    const grid = document.getElementById('standingsGrid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    ['A','B'].forEach(group => {
+      const standings = computeStandings(group);
+      const groupColor = group === 'A' ? 'grup-a' : 'grup-b';
+      const groupLabel = group === 'A' ? 'GRUP A' : 'GRUP B';
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'standings-table-wrap';
+
+      let html = `<div class="standings-title ${groupColor}">${groupLabel}</div>`;
+      html += `<table class="standings"><thead><tr>
+        <th>Tim</th>
+        <th>MP</th><th>W</th><th>D</th><th>L</th>
+        <th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+      </tr></thead><tbody>`;
+
+      standings.forEach((s, i) => {
+        const isQualify = i < 2; // 2 teratas lolos
+        const posClass = isQualify ? 'qualify' : '';
+        const displayName = teamNames[s.team] || s.team;
+        const gdDisplay = s.gd > 0 ? `+${s.gd}` : s.gd;
+        html += `<tr class="${posClass}">
+          <td><span class="pos-badge">${i+1}</span>${displayName}</td>
+          <td>${s.mp}</td>
+          <td>${s.w}</td>
+          <td>${s.d}</td>
+          <td>${s.l}</td>
+          <td>${s.gf}</td>
+          <td>${s.ga}</td>
+          <td>${gdDisplay}</td>
+          <td class="pts-col">${s.pts}</td>
+        </tr>`;
+      });
+
+      html += `</tbody></table>`;
+      wrapper.innerHTML = html;
+      grid.appendChild(wrapper);
+    });
+
+    if (typeof wcRenderTeamStats === 'function') {
+      wcRenderTeamStats();
+    }
+    if (typeof wcRefreshStandingsPreview === 'function') {
+      wcRefreshStandingsPreview();
+    }
+  }
+
+  // Reset semua skor
+  function resetScores() {
+    if (!confirm('Reset semua skor pertandingan?')) return;
+    matchScores = {};
+    try { localStorage.removeItem(SCORE_STORAGE_KEY); } catch (e) {}
+    syncScoreInputs();
+    renderStandings();
+    autoFillFinalTeams();
+  }
+
+  // Isi otomatis nama tim final berdasarkan klasemen
+  function autoFillFinalTeams() {
+    const standingsA = computeStandings('A');
+    const standingsB = computeStandings('B');
+
+    // Hanya isi otomatis jika semua pertandingan grup sudah memiliki skor
+    // Cek apakah semua match sudah ada skor lengkap
+    const allMatchesComplete = (group) => {
+      return GROUP_MATCHES[group].every(m => {
+        const s = matchScores[m.id];
+        return s && s[m.home] !== undefined && s[m.away] !== undefined;
+      });
+    };
+
+    if (allMatchesComplete('A') && standingsA.length >= 2) {
+      teamNames.JUARA_A = teamNames[standingsA[0].team] || standingsA[0].team;
+      teamNames.RUNNER_A = teamNames[standingsA[1].team] || standingsA[1].team;
+    }
+    if (allMatchesComplete('B') && standingsB.length >= 2) {
+      teamNames.JUARA_B = teamNames[standingsB[0].team] || standingsB[0].team;
+      teamNames.RUNNER_B = teamNames[standingsB[1].team] || standingsB[1].team;
+    }
+
+    // Perbarui tampilan nama tim di tabel
+    document.querySelectorAll('[data-team="JUARA_A"]').forEach(el => el.textContent = teamNames.JUARA_A);
+    document.querySelectorAll('[data-team="JUARA_B"]').forEach(el => el.textContent = teamNames.JUARA_B);
+    document.querySelectorAll('[data-team="RUNNER_A"]').forEach(el => el.textContent = teamNames.RUNNER_A);
+    document.querySelectorAll('[data-team="RUNNER_B"]').forEach(el => el.textContent = teamNames.RUNNER_B);
+  }
+
+  /* ==========================================================
+     ADDITIVE MODULE: STATISTIK TIM & WA KLASEMEN
+     ========================================================== */
+  let wcSelectedStandingsScope = 'ALL';
+  const wcWaStandingsModal = document.getElementById('wcWaStandingsModal');
+
+  function wcEscapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function wcComputeGroupExtendedStats(group) {
+    const baseList = computeStandings(group);
+    const totalMp = baseList.reduce((acc, item) => acc + item.mp, 0);
+    const hasPlayed = totalMp > 0;
+
+    const teams = baseList.map(item => {
+      const displayName = teamNames[item.team] || item.team;
+      const winPctNum = item.mp > 0 ? (item.w / item.mp) * 100 : 0;
+      const avgGoalsNum = item.mp > 0 ? item.gf / item.mp : 0;
+      return {
+        ...item,
+        displayName,
+        winPct: item.mp > 0 ? `${winPctNum.toFixed(1)}%` : '0.0%',
+        winPctNum,
+        avgGoals: item.mp > 0 ? avgGoalsNum.toFixed(2) : '0.00',
+        avgGoalsNum
+      };
+    });
+
+    if (!hasPlayed) {
+      return {
+        group,
+        hasPlayed: false,
+        teams,
+        mostWinsText: '-',
+        topOffenseText: '-',
+        bestDefenseText: '-',
+        bestGdText: '-'
+      };
+    }
+
+    const formatLeader = (getter, suffixFn) => {
+      let maxVal = -Infinity;
+      teams.forEach(t => {
+        const v = getter(t);
+        if (v > maxVal) maxVal = v;
+      });
+      const winners = teams.filter(t => getter(t) === maxVal);
+      if (maxVal <= 0 && getter !== (t => t.gd)) return '-';
+      const names = winners.map(w => w.displayName).join(', ');
+      return `${names} (${suffixFn(maxVal)})`;
+    };
+
+    const mostWinsText = formatLeader(t => t.w, v => `${v} W`);
+    const topOffenseText = formatLeader(t => t.gf, v => `${v} GF`);
+
+    const playedTeams = teams.filter(t => t.mp > 0);
+    let minGa = Infinity;
+    playedTeams.forEach(t => {
+      if (t.ga < minGa) minGa = t.ga;
+    });
+    const bestDefenseTeams = playedTeams.filter(t => t.ga === minGa);
+    const bestDefenseText = bestDefenseTeams.length > 0
+      ? `${bestDefenseTeams.map(t => t.displayName).join(', ')} (${minGa} GA)`
+      : '-';
+
+    let maxGd = -Infinity;
+    teams.forEach(t => {
+      if (t.gd > maxGd) maxGd = t.gd;
+    });
+    const bestGdTeams = teams.filter(t => t.gd === maxGd);
+    const bestGdText = bestGdTeams.length > 0
+      ? `${bestGdTeams.map(t => t.displayName).join(', ')} (${maxGd > 0 ? `+${maxGd}` : maxGd} GD)`
+      : '-';
+
+    return {
+      group,
+      hasPlayed: true,
+      teams,
+      mostWinsText,
+      topOffenseText,
+      bestDefenseText,
+      bestGdText
+    };
+  }
+
+  function wcRenderTeamStats() {
+    const grid = document.getElementById('wcTeamStatsGrid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    ['A', 'B'].forEach(group => {
+      const info = wcComputeGroupExtendedStats(group);
+      const cardClass = group === 'A' ? 'wc-group-a' : 'wc-group-b';
+      const label = group === 'A' ? 'GRUP A' : 'GRUP B';
+
+      const cardsHtml = info.teams.map(t => {
+        const gdText = t.gd > 0 ? `+${t.gd}` : `${t.gd}`;
+        return `
+          <div class="wc-mini-stat-card">
+            <div class="wc-mini-stat-top">
+              <span class="wc-mini-team-name" title="${wcEscapeHtml(t.displayName)}">${wcEscapeHtml(t.displayName)}</span>
+              <span class="wc-mini-pts-pill">${t.pts} PTS</span>
+            </div>
+            <div class="wc-mini-metrics">
+              <span>MP: <strong>${t.mp}</strong></span>
+              <span>W: <strong>${t.w}</strong></span>
+              <span>D: <strong>${t.d}</strong></span>
+              <span>L: <strong>${t.l}</strong></span>
+              <span>GF: <strong>${t.gf}</strong></span>
+              <span>GA: <strong>${t.ga}</strong></span>
+              <span>GD: <strong>${gdText}</strong></span>
+            </div>
+            <div class="wc-mini-extra">
+              <span>Win Rate: <strong>${t.winPct}</strong></span>
+              <span>Avg Gol: <strong>${t.avgGoals}</strong></span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const statusBanner = !info.hasPlayed
+        ? `<div class="wc-empty-match-note">Belum ada pertandingan</div>`
+        : '';
+
+      const groupCard = document.createElement('div');
+      groupCard.className = `wc-group-stat-card ${cardClass}`;
+      groupCard.innerHTML = `
+        <div class="wc-group-stat-title">
+          <span>STATISTIK ${label}</span>
+          <span>${info.hasPlayed ? 'Aktif' : 'Menunggu Skor'}</span>
+        </div>
+        ${statusBanner}
+        <div class="wc-team-stat-cards">${cardsHtml}</div>
+        <div class="wc-highlights-box">
+          <div class="wc-highlights-title">Sorotan Performa ${label}</div>
+          <div class="wc-highlight-row">
+            <span class="wc-highlight-label">Kemenangan Terbanyak</span>
+            <span class="wc-highlight-val">${info.hasPlayed ? wcEscapeHtml(info.mostWinsText) : 'Belum ada pertandingan'}</span>
+          </div>
+          <div class="wc-highlight-row">
+            <span class="wc-highlight-label">Produktivitas Gol Tertinggi</span>
+            <span class="wc-highlight-val">${info.hasPlayed ? wcEscapeHtml(info.topOffenseText) : 'Belum ada pertandingan'}</span>
+          </div>
+          <div class="wc-highlight-row">
+            <span class="wc-highlight-label">Pertahanan Terbaik</span>
+            <span class="wc-highlight-val">${info.hasPlayed ? wcEscapeHtml(info.bestDefenseText) : 'Belum ada pertandingan'}</span>
+          </div>
+          <div class="wc-highlight-row">
+            <span class="wc-highlight-label">Selisih Gol Terbaik</span>
+            <span class="wc-highlight-val">${info.hasPlayed ? wcEscapeHtml(info.bestGdText) : 'Belum ada pertandingan'}</span>
+          </div>
+        </div>
+      `;
+
+      grid.appendChild(groupCard);
+    });
+  }
+
+  function wcFormatGroupStandingsText(group) {
+    const rows = computeStandings(group);
+    const medals = ['🥇', '🥈', '🥉'];
+    const title = group === 'A' ? 'GRUP A' : 'GRUP B';
+    let out = `${title}\n`;
+
+    rows.forEach((s, idx) => {
+      const rankBadge = medals[idx] ? `${medals[idx]} ` : '';
+      const name = teamNames[s.team] || s.team;
+      const gdFormatted = s.gd > 0 ? `+${s.gd}` : `${s.gd}`;
+      out += `${rankBadge}${idx + 1}. ${name}\n`;
+      out += `MP: ${s.mp} | W: ${s.w} | D: ${s.d} | L: ${s.l}\n`;
+      out += `GF: ${s.gf} | GA: ${s.ga} | GD: ${gdFormatted}\n`;
+      out += `PTS: ${s.pts}\n`;
+    });
+
+    return out.trimEnd();
+  }
+
+  function wcBuildStandingsWAText(scope) {
+    const activeScope = scope || wcSelectedStandingsScope || 'ALL';
+    let text = `KLASEMEN WARANGGONO CUP 2026\n\n`;
+
+    if (activeScope === 'A') {
+      text += `${wcFormatGroupStandingsText('A')}\n`;
+    } else if (activeScope === 'B') {
+      text += `${wcFormatGroupStandingsText('B')}\n`;
+    } else {
+      text += `${wcFormatGroupStandingsText('A')}\n\n`;
+      text += `${wcFormatGroupStandingsText('B')}\n`;
+    }
+
+    text += `\n_Pesan otomatis dari Jadwal Waranggono Cup 2026_`;
+    return text;
+  }
+
+  function wcRefreshStandingsPreview() {
+    const previewEl = document.getElementById('wcWaStandingsPreview');
+    if (!previewEl) return;
+    previewEl.textContent = wcBuildStandingsWAText(wcSelectedStandingsScope);
+  }
+
+  function wcSelectStandingsScope(scope) {
+    wcSelectedStandingsScope = scope;
+    const picker = document.getElementById('wcWaStandingsPicker');
+    if (picker) {
+      picker.querySelectorAll('[data-wc-scope]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-wc-scope') === scope);
+      });
+    }
+    wcRefreshStandingsPreview();
+  }
+
+  function wcOpenStandingsWAModal() {
+    if (!wcWaStandingsModal) return;
+    wcSelectStandingsScope(wcSelectedStandingsScope || 'ALL');
+    wcWaStandingsModal.classList.add('open');
+  }
+
+  function wcCloseStandingsWAModal() {
+    if (!wcWaStandingsModal) return;
+    wcWaStandingsModal.classList.remove('open');
+  }
+
+  function wcSendStandingsWA() {
+    const text = wcBuildStandingsWAText(wcSelectedStandingsScope);
+    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  }
+
+  function wcCopyStandingsWA() {
+    const text = wcBuildStandingsWAText(wcSelectedStandingsScope);
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Teks klasemen berhasil di-copy!');
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      alert('Teks klasemen berhasil di-copy!');
+    });
+  }
+
+  if (wcWaStandingsModal) {
+    wcWaStandingsModal.addEventListener('click', (e) => {
+      if (e.target === wcWaStandingsModal) wcCloseStandingsWAModal();
+    });
+  }
+
+  /* ==========================================================
+     INISIALISASI
+     ========================================================== */
+  renderTeams();
+  filterSchedule();
+  syncScoreInputs();
+  initScoreListeners();
+  renderStandings();
+  autoFillFinalTeams();
+</script>
+
 </body>
 </html>
